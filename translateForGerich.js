@@ -4,11 +4,13 @@ const path = require ('path');
 const {readdir} = require('fs/promises');
 
 //__dirname
-let dir = 'D:/node/modules';
-let name = 'translation';
-const arrFiles = [];
 
-const files = readdir(dir); //чтение каталога возвращает массив имен
+let dir = 'D:/node/modules/';
+let name = 'translation';
+let text = 'actors';
+
+function listActors(directory, name, text){
+    const files = readdir(directory); //чтение каталога возвращает массив имен
         files.then(function(result) { //почему через then? без него __dirname
             result.filter(file => {
                 if(file.includes(name)){
@@ -20,14 +22,18 @@ const files = readdir(dir); //чтение каталога возвращает
                     let arr = [];
 
                     rl.on('line', function(line) { 
-	                if (line.includes('actors')){
+	                if (line.includes(text)){
 		                arr.push(line);
-		                fs.appendFile('test2.txt', `${line} \n`, (err) => {
-			                if (err) throw err;
-			                    console.log('Data has been added!');
-		            })
+		                fs.appendFile('test2.txt', `${line} \n`,
+                        function (err) {
+                                if (err) throw err;
+                                console.log('Data has been added!');
+                            })
 		            }   
                 })
                 }
             })
         })
+        }
+
+        listActors(dir, name, text);
